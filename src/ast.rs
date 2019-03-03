@@ -11,7 +11,7 @@ pub trait Expression : Node {
 }
 
 pub struct Program<S: Statement> {
-    statements: Vec<S>
+    statements: Vec<Box<S>>
 }
 
 impl<S> Node for Program<S>
@@ -23,5 +23,44 @@ impl<S> Node for Program<S>
         } else {
             None
         }
+    }
+}
+
+
+
+
+struct LetStatement<E: Expression> {
+    name    : Identifier,
+    value   : E,
+}
+
+impl<E> Statement for LetStatement<E>
+    where E: Expression
+{
+    fn statement_node() {}
+}
+
+impl<E> Node for LetStatement<E>
+    where E: Expression
+{
+    fn token_literal(&self) -> Option<String> {
+        Some(String::from("let"))
+    }
+}
+
+
+
+
+struct Identifier {
+    value : String,
+}
+
+impl Expression for Identifier {
+    fn expression_node() {}
+}
+
+impl Node for Identifier {
+    fn token_literal(&self) -> Option<String> {
+        Some(self.value.clone())
     }
 }
