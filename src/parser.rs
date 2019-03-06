@@ -26,6 +26,8 @@ impl Parser {
 
     pub fn parse_program(&mut self) -> Result<ast::Program, &'static str>
     {
-        Err("fail parsing program")
+        let mut p = ast::Program::new();
+        Ok(p)
+        //Err("fail parsing program")
     }
 }

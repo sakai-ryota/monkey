@@ -8,8 +8,16 @@ pub struct Program {
     statements: Vec<Box<Statement>>
 }
 
+impl Program {
+    pub fn new() -> Program {
+        let stmts : Vec<Box<Statement>> = Vec::new();
+        Program { statements : stmts }
+    }
 
-
+    pub fn len(&self) -> usize {
+        self.statements.len()
+    }
+}
 
 impl Node for Program
 {
