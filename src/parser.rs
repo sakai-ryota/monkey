@@ -24,8 +24,7 @@ impl Parser {
         self.peek_token = self.lex.next_token();
     }
 
-    pub fn parse_program<S>(&mut self) -> Result<ast::Program<S>, &'static str>
-        where S: ast::Statement
+    pub fn parse_program(&mut self) -> Result<ast::Program, &'static str>
     {
         Err("fail parsing program")
     }

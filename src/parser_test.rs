@@ -9,8 +9,8 @@ let y = 10;
 let foobar = 838383;
 ");
 
-    let mut lexer  = Lexer::new(input.chars());
+    let lexer  = Lexer::new(input.chars());
     let mut parser = Parser::new(lexer);
 
-    let program: Result<ast::Program<ast::Statement>, _> = parser.parse_program();
+    let program = parser.parse_program().unwrap();
 }

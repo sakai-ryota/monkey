@@ -1,21 +1,17 @@
 pub trait Node {
     fn token_literal(&self) -> Option<String>;
 }
+pub trait Statement  : Node {}
+pub trait Expression : Node {}
 
-pub trait Statement : Node {
-    fn statement_node();
+pub struct Program {
+    statements: Vec<Box<Statement>>
 }
 
-pub trait Expression : Node {
-    fn expression_node();
-}
 
-pub struct Program<S: Statement> {
-    statements: Vec<Box<S>>
-}
 
-impl<S> Node for Program<S>
-    where S: Statement
+
+impl Node for Program
 {
     fn token_literal(&self) -> Option<String> {
         if self.statements.len() > 0 {
@@ -29,19 +25,14 @@ impl<S> Node for Program<S>
 
 
 
-struct LetStatement<E: Expression> {
+struct LetStatement {
     name    : Identifier,
-    value   : E,
+    value   : Box<Expression>,
 }
 
-impl<E> Statement for LetStatement<E>
-    where E: Expression
-{
-    fn statement_node() {}
-}
+impl Statement for LetStatement {}
 
-impl<E> Node for LetStatement<E>
-    where E: Expression
+impl Node for LetStatement
 {
     fn token_literal(&self) -> Option<String> {
         Some(String::from("let"))
@@ -55,9 +46,7 @@ struct Identifier {
     value : String,
 }
 
-impl Expression for Identifier {
-    fn expression_node() {}
-}
+impl Expression for Identifier {}
 
 impl Node for Identifier {
     fn token_literal(&self) -> Option<String> {
