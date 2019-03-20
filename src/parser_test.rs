@@ -9,7 +9,7 @@ let y = 10;
 let foobar = 838383;
 ");
 
-    let lexer  = Lexer::new(input.chars());
+    let lexer      = Lexer::new(input.chars());
     let mut parser = Parser::new(lexer);
 
     let program = parser.parse_program()
@@ -24,8 +24,12 @@ let foobar = 838383;
         "foobar",
     ];
 
-    for tt in tests {
-        let stmt = program.next();
-        assert_eq!(stmt, tt);
+    for (i, tt) in tests.iter().enumerate() {
+        let stmt = program.get(i);
+        test_let_statement(stmt, tt);
     }
+}
+
+fn test_let_statement(stmt: &Box<ast::Statement>, name: &'static str) {
+        assert_eq!(stmt.token_literal().unwrap(), "let");
 }

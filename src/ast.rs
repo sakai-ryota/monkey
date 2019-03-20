@@ -1,8 +1,19 @@
 pub trait Node {
     fn token_literal(&self) -> Option<String>;
 }
-pub trait Statement  : Node {}
+pub trait Statement  : Node {
+    fn who(&self) -> String;
+}
 pub trait Expression : Node {}
+
+
+
+pub enum ASTNode {
+    Program(Program),
+    LetStatement(LetStatement),
+    Identifier(Identifier),
+}
+
 
 pub struct Program {
     statements: Vec<Box<Statement>>
@@ -16,6 +27,10 @@ impl Program {
 
     pub fn len(&self) -> usize {
         self.statements.len()
+    }
+
+    pub fn get(&self, i: usize) -> &Box<Statement> {
+        &self.statements[i]
     }
 }
 
@@ -33,12 +48,22 @@ impl Node for Program
 
 
 
-struct LetStatement {
+pub struct LetStatement {
     name    : Identifier,
     value   : Box<Expression>,
 }
 
-impl Statement for LetStatement {}
+impl LetStatement {
+    pub fn get_ident(&self) -> Option<String> {
+        self.name.token_literal()
+    }
+}
+
+impl Statement for LetStatement {
+    fn who(&self) -> String {
+        String::from("let")
+    }
+}
 
 impl Node for LetStatement
 {
@@ -50,7 +75,7 @@ impl Node for LetStatement
 
 
 
-struct Identifier {
+pub struct Identifier {
     value : String,
 }
 
